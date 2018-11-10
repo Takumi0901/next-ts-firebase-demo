@@ -15,7 +15,7 @@
     "lint-functions": "tslint --project src/functions",
     "copy-deps": "cpx \"*{package.json,package-lock.json,yarn.lock}\" \"dist/functions\"",
     "install-deps": "cd \"dist/functions\" && npm i",
-    "precommit": "lint-staged"
+    "precommit": "npm run typecheck-app && lint-staged"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
