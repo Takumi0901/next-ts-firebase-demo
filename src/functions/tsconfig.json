@@ -6,7 +6,13 @@
     "outDir": "../../dist/functions",
     "sourceMap": true,
     "target": "es6",
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "experimentalDecorators": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "keyofStringsOnly": true
   },
   "compileOnSave": true,
   "include": ["src"]
