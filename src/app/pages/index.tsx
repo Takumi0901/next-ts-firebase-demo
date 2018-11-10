@@ -5,3 +5,6 @@ export default () => (
     <p>Index Page hoge</p>
   </App>
 )
+
+let hoge: number = 1
+hoge = 'hogehoge'
