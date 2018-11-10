@@ -1,7 +1,9 @@
-import App from '../components/App';
+import App from '../components/App'
 
-export default () => (
-  <App>
-    <p>Index Page</p>
-  </App>
-);
+export default () => {
+  return (
+    <App>
+      <p>Index Page hoge</p>
+    </App>
+  )
+}

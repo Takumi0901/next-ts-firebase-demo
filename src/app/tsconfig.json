@@ -1,5 +1,4 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
@@ -16,6 +15,10 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "noEmit": true,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "experimentalDecorators": true,
+    "keyofStringsOnly": true,
     "lib": [
       "es6",
       "dom",
