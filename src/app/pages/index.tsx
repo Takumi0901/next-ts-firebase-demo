@@ -15,6 +15,7 @@ export default class extends React.Component {
           console.log('******************')
         })
       })
+      .catch(err => console.log(err))
   }
 
   render() {
