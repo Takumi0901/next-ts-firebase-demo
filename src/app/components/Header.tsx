@@ -7,6 +7,9 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import { withStyles } from '@material-ui/core/styles'
 import { enhancer, Props } from './enhancers/Auth'
+import Cookies from 'js-cookie'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 
 const styles = {
   root: {
@@ -26,7 +29,24 @@ type SProps = {
   classes?: any
 }
 
-const Header: React.SFC<Props & SProps> = ({ pathname, classes, loginWithGitHub, token, logoutGitHub }) => (
+const query = gql`
+  query {
+    viewer {
+      login
+      email
+      login
+      avatarUrl
+    }
+  }
+`
+
+const Header: React.SFC<Props & SProps> = ({
+  pathname,
+  classes,
+  loginWithGitHub,
+  token = Cookies.get('token') || '',
+  logoutGitHub
+}) => (
   <header>
     <AppBar position="static">
       <Toolbar>
@@ -36,14 +56,22 @@ const Header: React.SFC<Props & SProps> = ({ pathname, classes, loginWithGitHub,
         <Typography variant="h6" color="inherit" className={classes.grow}>
           Firebase demo
         </Typography>
-        {token.length > 0 ? (
-          <Button color="inherit" onClick={() => logoutGitHub()}>
-            Logout
-          </Button>
-        ) : (
-          <Button color="inherit" onClick={() => loginWithGitHub()}>
-            Login
-          </Button>
+        {token.length > 0 && (
+          <Query query={query} fetchPolicy="network-only">
+            {({ data: { viewer } }) => {
+              if (!viewer) {
+                return null
+              }
+              return (
+                <div>
+                  <img src={viewer.avatarUrl} alt="" width={28} />
+                  <Button color="inherit" onClick={() => logoutGitHub()}>
+                    Logout
+                  </Button>
+                </div>
+              )
+            }}
+          </Query>
         )}
       </Toolbar>
     </AppBar>
