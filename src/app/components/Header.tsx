@@ -5,9 +5,9 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
+import Router from 'next/router'
 import { withStyles } from '@material-ui/core/styles'
 import { enhancer, Props } from './enhancers/Auth'
-import Cookies from 'js-cookie'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
@@ -40,13 +40,7 @@ const query = gql`
   }
 `
 
-const Header: React.SFC<Props & SProps> = ({
-  pathname,
-  classes,
-  loginWithGitHub,
-  token = Cookies.get('token') || '',
-  logoutGitHub
-}) => (
+const Header: React.SFC<Props & SProps> = ({ pathname, classes, token, logoutGitHub }) => (
   <header>
     <AppBar position="static">
       <Toolbar>
@@ -56,12 +50,10 @@ const Header: React.SFC<Props & SProps> = ({
         <Typography variant="h6" color="inherit" className={classes.grow}>
           Firebase demo
         </Typography>
-        {token.length > 0 && (
+        {token.length > 0 ? (
           <Query query={query} fetchPolicy="network-only">
             {({ data: { viewer } }) => {
-              if (!viewer) {
-                return null
-              }
+              if (!viewer) return null
               return (
                 <div>
                   <img src={viewer.avatarUrl} alt="" width={28} />
@@ -72,6 +64,10 @@ const Header: React.SFC<Props & SProps> = ({
               )
             }}
           </Query>
+        ) : (
+          <Button color="inherit" onClick={() => Router.push('/signin')}>
+            ログイン
+          </Button>
         )}
       </Toolbar>
     </AppBar>
@@ -81,9 +77,11 @@ const Header: React.SFC<Props & SProps> = ({
     <Link href="/about">
       <a className={pathname === '/about' ? 'is-active' : ''}>About</a>
     </Link>
-    <Link href="/signin">
-      <a className={pathname === '/signin' ? 'is-active' : ''}>SignIn</a>
-    </Link>
+    {token.length < 1 && (
+      <Link href="/signin">
+        <a className={pathname === '/signin' ? 'is-active' : ''}>SignIn</a>
+      </Link>
+    )}
   </header>
 )
 
